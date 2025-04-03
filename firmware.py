@@ -4,7 +4,7 @@ import network
 from time import time
 from sysc.config import sys as sysconfig
 from sysc.config.app import AppConfig
-from machine import deepsleep
+from machine import deepsleep, reset_cause, PWRON_RESET, SOFT_RESET, DEEPSLEEP_RESET
 from sysc.drivers import htu21d
 from sysc.envsensor import EnvironmentMeasurements
 
@@ -40,6 +40,14 @@ def fw_main(battery, i2c, led, appcfg) -> None:
 
     fw_debug("Posting stats")
     pws.post_stats(bat_voltage, wifi.config("ssid"), wifi.status("rssi"))
+
+    if (reason := get_abnormal_reset_reason()):
+        fw_warn("Detected abnormal reset reason: %s" % reason)
+        pws.send_notification("Detected abnormal reset reason: %s" % reason)
+    else:
+        fw_debug("No abnormal reset reason detected")
+    
+    led.off()
 
 def setup_wifi() -> network.WLAN:
     ### Initialization
@@ -115,6 +123,19 @@ def setup_envsensor(i2c) -> None:
             fw_warn("Unrecognised device @ I2C/" + hex(device))
     
     raise Exception("No environment sensor found")
+
+def get_abnormal_reset_reason() -> str:
+    reason = reset_cause()
+
+    if reason in (PWRON_RESET, SOFT_RESET, DEEPSLEEP_RESET):
+        return None
+    
+    if reason == WDT_RESET:
+        return "Watchdog"
+    elif reason == HARD_RESET:
+        return "Hard-reset"
+    else:
+        return "unknown (" + reason + ")"
 
 def fw_info(msg: str) -> None:
     os_info("pwos::firmware", msg)
