@@ -48,9 +48,7 @@ class HTU21D(envsensor.EnvironmentSensor):
             write_address (int): address to write to
         :return:
         """
-        self.i2c.start()
         self.i2c.writeto_mem(int(self.ADDRESS), int(write_address), '')
-        self.i2c.stop()
         time.sleep_ms(50)
         data = bytearray(3)
         self.i2c.readfrom_into(self.ADDRESS, data)
