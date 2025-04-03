@@ -19,7 +19,7 @@ class Battery:
         div_volts = (3.3 / 4095) * raw
         in_volts = (div_volts * (self.R1 + self.R2)) / self.R2
 
-        return in_volts
+        return round(in_volts, 2)
     
     def read_raw(self, samples: int) -> int:
         """ Read the raw ADC value. """
