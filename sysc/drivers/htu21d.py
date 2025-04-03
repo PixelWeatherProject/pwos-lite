@@ -82,4 +82,4 @@ class HTU21D(envsensor.EnvironmentSensor):
         return self.humidity
 
     def read_air_pressure(self) -> int:
-        return self.read_air_pressure
+        return self.air_pressure
