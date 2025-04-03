@@ -47,6 +47,8 @@ def fw_main(battery, i2c, led, appcfg) -> None:
     else:
         fw_debug("No abnormal reset reason detected")
     
+    pws.send_bye()
+    wifi.disconnect()
     led.off()
 
 def setup_wifi() -> network.WLAN:
