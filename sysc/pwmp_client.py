@@ -65,6 +65,15 @@ class PwmpClient:
         })
         self.await_ok()
     
+    def send_bye(self) -> None:
+        self.send_request("Bye")
+
+        try:
+            while self.socket.recv(1):
+                pass
+        except:
+            pass
+    
     def await_ok(self) -> None:
         msg = self.receive_message()
         assert msg["content"]["Response"] == "Ok", "Expected `Ok` response, got: " + msg["content"]
