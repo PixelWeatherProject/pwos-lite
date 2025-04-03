@@ -5,7 +5,8 @@ from time import time
 from sysc.config import sys as sysconfig
 from sysc.config.app import AppConfig
 from machine import deepsleep
-from sysc import drivers
+from sysc.drivers import htu21d
+from sysc.envsensor import EnvironmentMeasurements
 
 SBOP_SLEEP_TIME = 2_629_746_000 # 1 month
 
@@ -32,6 +33,9 @@ def fw_main(battery, i2c, led, appcfg) -> None:
         #deepsleep()
     
     envsensor = setup_envsensor(i2c)
+    results = EnvironmentMeasurements(envsensor)
+    fw_info("{%.02f}*C / {%.00f}%" % (results.temperature, results.humidity))
+    fw_debug("Posting measurements")
 
 def setup_wifi() -> network.WLAN:
     ### Initialization
@@ -60,7 +64,7 @@ def setup_wifi() -> network.WLAN:
     networks = sorted(networks, key = lambda ap: ap[3], reverse = True)
 
     if len(networks) == 0:
-        os_error("No usable networks found")
+        fw_error("No usable networks found")
         raise Exception("offline")
     
     for ap in networks:
@@ -100,9 +104,9 @@ def setup_envsensor(i2c) -> None:
     devices = i2c.scan()
 
     for device in devices:
-        if device == drivers.htu21d.HTU21D.ADDRESS:
+        if device == htu21d.HTU21D.ADDRESS:
             fw_debug("Detected HTU-compatible sensor")
-            return drivers.htu21d.HTU21D(i2c)
+            return htu21d.HTU21D(i2c)
         else:
             fw_warn("Unrecognised device @ I2C/" + hex(device))
     
