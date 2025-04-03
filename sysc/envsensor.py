@@ -33,3 +33,12 @@ class EnvironmentSensor:
         Upon a connection or communication error, an exception shall be raised.
         """
         raise Exception("not implemented")
+
+class EnvironmentMeasurements:
+    def __init__(self, envs: EnvironmentSensor) -> None:
+        if not envs.connected():
+            raise Exception("Environment sensor is not connected")
+        
+        self.temperature = envs.read_temperature()
+        self.humidity = envs.read_humidity()
+        self.read_air_pressure = envs.read_air_pressure()
