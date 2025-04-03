@@ -76,10 +76,10 @@ class HTU21D(envsensor.EnvironmentSensor):
         return True
     
     def read_temperature(self) -> float:
-        return self.temperature
+        return round(self.temperature, 2)
     
     def read_humidity(self) -> int:
-        return self.humidity
+        return int(round(self.humidity, 0))
 
     def read_air_pressure(self) -> int:
         return None
