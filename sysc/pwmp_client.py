@@ -45,6 +45,16 @@ class PwmpClient:
         self.send_request({ "SendNotification": msg })
         self.await_ok()
     
+    def post_measurements(self, results) -> None:
+        self.send_request({
+            "PostResults": {
+                "temperature": str(results.temperature),
+                "humidity": results.humidity,
+                "air_pressure": results.air_pressure
+            }
+        })
+        self.await_ok()
+    
     def await_ok(self) -> None:
         msg = self.receive_message()
         assert msg["content"]["Response"] == "Ok", "Expected `Ok` response, got: " + msg["content"]

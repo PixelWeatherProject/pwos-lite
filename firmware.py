@@ -34,8 +34,9 @@ def fw_main(battery, i2c, led, appcfg) -> None:
     
     envsensor = setup_envsensor(i2c)
     results = EnvironmentMeasurements(envsensor)
-    fw_info("{%.02f}*C / {%.00f}%" % (results.temperature, results.humidity))
+    fw_info("%.02f*C / %.00f%%" % (results.temperature, results.humidity))
     fw_debug("Posting measurements")
+    pws.post_measurements(results)
 
 def setup_wifi() -> network.WLAN:
     ### Initialization
