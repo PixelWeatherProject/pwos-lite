@@ -69,3 +69,17 @@ class HTU21D(envsensor.EnvironmentSensor):
         """Calculate humidity"""
         raw =  self._issue_measurement(self.ISSUE_HU_ADDRESS)
         return -6 + (125.0 * raw / 65536)
+    
+    ### EnvironmentSesnor Implementation ###
+
+    def connected(self) -> bool:
+        return True
+    
+    def read_temperature(self) -> float:
+        return self.temperature
+    
+    def read_humidity(self) -> int:
+        return self.humidity
+
+    def read_air_pressure(self) -> int:
+        return self.read_air_pressure
