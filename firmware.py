@@ -38,6 +38,9 @@ def fw_main(battery, i2c, led, appcfg) -> None:
     fw_debug("Posting measurements")
     pws.post_measurements(results)
 
+    fw_debug("Posting stats")
+    pws.post_stats(bat_voltage, wifi.config("ssid"), wifi.status("rssi"))
+
 def setup_wifi() -> network.WLAN:
     ### Initialization
 

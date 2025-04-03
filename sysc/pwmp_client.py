@@ -55,6 +55,16 @@ class PwmpClient:
         })
         self.await_ok()
     
+    def post_stats(self, battery: float, ssid: str, rssi: int) -> None:
+        self.send_request({
+            "PostStats": {
+                "battery": str(battery),
+                "wifi_ssid": ssid,
+                "wifi_rssi": rssi
+            }
+        })
+        self.await_ok()
+    
     def await_ok(self) -> None:
         msg = self.receive_message()
         assert msg["content"]["Response"] == "Ok", "Expected `Ok` response, got: " + msg["content"]
