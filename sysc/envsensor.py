@@ -41,4 +41,4 @@ class EnvironmentMeasurements:
         
         self.temperature = envs.read_temperature()
         self.humidity = envs.read_humidity()
-        self.read_air_pressure = envs.read_air_pressure()
+        self.air_pressure = envs.read_air_pressure()
