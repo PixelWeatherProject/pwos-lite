@@ -40,5 +40,7 @@ Assuming you're in the root of this repo, you can use *rshell*'s `rsync -m . /py
 ## Size comparison
 |                 | **Firmware (debug)** | **Firmware (release `-O3`)** | **Interpreter** |
 | --------------- | -------------------- | ---------------------------- | --------------- |
-| **MicroPython** | 180kB                | N/A                          | 1.6MB           |
+| **MicroPython** | N/A                  | 180kB<sup>*</sup>            | 1.6MB           |
 | **Rust**        | 1.106MB              | 758kB                        | N/A             |
+
+- `*`: Optimization does not exist in this context
