@@ -10,7 +10,6 @@ from sys import print_exception
 
 os_info("pwos", "PixelWeatherOS Lite")
 os_info("pwos", "(C) Fábián Varga 2025")
-os_debug("pwos", "Using ESP-IDF vX.Y.Z")
 
 os_debug("pwos", "Initializing system LED")
 led = BoardLed(sysconfig.ONBOARD_LED_PIN, sysconfig.ONBOARD_LED_INVERT)
