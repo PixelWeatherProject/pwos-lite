@@ -18,8 +18,12 @@ class Battery:
         raw = self.read_raw(samples)
         div_volts = (3.3 / 4095) * raw
         in_volts = (div_volts * (self.R1 + self.R2)) / self.R2
+        in_volts = round(in_volts, 2)
 
-        return round(in_volts, 2)
+        if in_volts > 4.2:
+            return 4.2
+        else:
+            return in_volts
     
     def read_raw(self, samples: int) -> int:
         """ Read the raw ADC value. """
